@@ -32,36 +32,35 @@ const CheckoutPage = ({ params }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newBooking = {
-        email: data?.user?.email,
-        name: data?.user?.name,
-        address: e.target.address.value,
-        phone: e.target.phone.value,
-        eventDate: e.target.eventDate.value,
-        guestCount: e.target.guestCount.value,
-        specialRequests: e.target.address.value,
-        serviceTitle: title,
-        price: price,
-        img: img,
-        status: "Confirmed",
-        bookedTime: new Date().toISOString()
-    }
-    const res = await fetch('http://localhost:3000/checkout/api/new-booking', {
-        method: 'POST',
-        body: JSON.stringify(newBooking),
-        headers: {
-            "content-type": "application/json"
-        }
-    })
+      email: data?.user?.email,
+      name: data?.user?.name,
+      address: e.target.address.value,
+      phone: e.target.phone.value,
+      eventDate: e.target.eventDate.value,
+      guestCount: e.target.guestCount.value,
+      specialRequests: e.target.address.value,
+      serviceTitle: title,
+      price: price,
+      img: img,
+      status: "Confirmed",
+      bookedTime: new Date().toISOString(),
+    };
+    const res = await fetch("http://localhost:3000/checkout/api/new-booking", {
+      method: "POST",
+      body: JSON.stringify(newBooking),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
 
     // console.log(res)
 
-    if(res.status === 200){
-        toast.success("Event Booked Successfully 🤩")
-    } else{
-        toast.error("Event Booking Failed 😥")
+    if (res.status === 200) {
+      toast.success("Event Booked Successfully 🤩");
+      e.target.reset();
+    } else {
+      toast.error("Event Booking Failed 😥");
     }
-
-
   };
 
   useEffect(() => {

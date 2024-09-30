@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Clock, FilePenLine, Trash2 } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { toast } from "react-toastify";
 
 const MyBookingsPage = () => {
   const [bookings, setBookings] = useState([]);
@@ -27,9 +28,23 @@ const MyBookingsPage = () => {
     // Implement view booking logic here
   };
 
-  const handleCancelBooking = (id) => {
-    console.log(`Cancel booking ${id}`);
-    // Implement cancel booking logic here
+  const handleCancelBooking = async (id) => {
+    const deleted = await fetch(
+      `http://localhost:3000/my-bookings/api/delete-booking/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    const result = await deleted.json();
+
+    if (result.response?.deletedCount > 0) {
+      toast.success("Booking Deleted Successfully!");
+      loadData();
+    } else {
+      toast.error("Booking Deleted Failed!");
+    }
+    console.log(deleted);
   };
 
   return (
@@ -129,13 +144,13 @@ const MyBookingsPage = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <button
-                        onClick={() => handleViewBooking(booking.id)}
+                        onClick={() => handleViewBooking(booking._id)}
                         className="text-purple-400 hover:text-purple-300 mr-4 transition-colors duration-150 ease-in-out"
                       >
                         <FilePenLine className="h-5 w-5" />
                       </button>
                       <button
-                        onClick={() => handleCancelBooking(booking.id)}
+                        onClick={() => handleCancelBooking(booking._id)}
                         className="text-red-400 hover:text-red-300 transition-colors duration-150 ease-in-out"
                       >
                         <Trash2 className="h-5 w-5" />
