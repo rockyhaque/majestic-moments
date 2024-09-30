@@ -18,7 +18,10 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "Majestic Moments",
+  title: {
+    default: "Majestic Moments",
+    template: "%s | Majestic Moments"
+  },
   description: "Create your memory with us",
 };
 

@@ -6,6 +6,7 @@ import { connectDB } from "@/lib/connectDB";
 import bcrypt from "bcrypt";
 
 const handler = NextAuth({
+  secret: process.env.NEXT_PUBLIC_AUTH_SECRET,
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,

@@ -128,3 +128,9 @@ Homepage URL
 Authorization callback URL: http://localhost:3000/api/auth/callback/github
 
 click on Register Application
+
+### secret
+
+NEXT_PUBLIC_AUTH_SECRET
+
+https://next-auth.js.org/configuration/options

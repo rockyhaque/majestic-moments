@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import Link from "next/link";
 
 export default function ServiceCard({ service }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -14,8 +15,16 @@ export default function ServiceCard({ service }) {
   const mouseXSpring = useSpring(x);
   const mouseYSpring = useSpring(y);
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["17.5deg", "-17.5deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-17.5deg", "17.5deg"]);
+  const rotateX = useTransform(
+    mouseYSpring,
+    [-0.5, 0.5],
+    ["17.5deg", "-17.5deg"]
+  );
+  const rotateY = useTransform(
+    mouseXSpring,
+    [-0.5, 0.5],
+    ["-17.5deg", "17.5deg"]
+  );
 
   const handleMouseMove = (e) => {
     const rect = ref.current?.getBoundingClientRect();
@@ -69,15 +78,17 @@ export default function ServiceCard({ service }) {
           {service?.service_id}
         </motion.div>
         <h3 className="text-2xl font-bold text-white mb-2">{service?.title}</h3>
-        <p className="text-purple-300 mb-4">Starting from</p>
+        <p className="text-purple-300 mb-4 font-semibold">{service?.price} BDT</p>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="mt-4 w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 hover:from-purple-700 hover:to-pink-700"
-        >
-          Details
-        </motion.button>
+        <Link href={`/services/${service?._id}`}>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="mt-4 w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 hover:from-purple-700 hover:to-pink-700"
+          >
+            Details
+          </motion.button>
+        </Link>
       </div>
 
       {isHovered && (

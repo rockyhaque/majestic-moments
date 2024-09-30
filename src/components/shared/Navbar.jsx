@@ -10,16 +10,16 @@ import { signOut, useSession } from "next-auth/react";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const session = useSession();
-  console.log(session);
+  // console.log(session);
 
   const menuItems = [
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
     { name: "Services", href: "/service" },
     { name: "Contact", href: "/contact" },
+    { name: "My Bookings", href: "/my-bookings" },
     { name: "Login", href: "/login" },
     { name: "Sign Up", href: "/signup" },
-    { name: "Demo", href: "/demo" },
   ];
 
   return (
@@ -33,7 +33,7 @@ export default function Navbar() {
               transition={{ duration: 0.5 }}
               className="flex-shrink-0"
             >
-              <Link href="#" className="text-2xl font-bold text-gray-800">
+              <Link href="/" className="text-2xl font-bold text-gray-800">
                 {/* <Image
                   href="./images/logo.png"
                   width={30}
@@ -75,9 +75,9 @@ export default function Navbar() {
                   <div></div>
                 )}
 
-                {
-                  session?.status === 'loading' && <span className="loading loading-dots loading-xs"></span>
-                }
+                {session?.status === "loading" && (
+                  <span className="loading loading-dots loading-xs"></span>
+                )}
 
                 {session.data ? (
                   <button
