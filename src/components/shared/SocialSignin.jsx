@@ -4,13 +4,18 @@ import React from "react";
 import { motion } from "framer-motion";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const SocialSignin = () => {
   const router = useRouter();
   const session = useSession();
+  const searchParams = useSearchParams();
+  const path = searchParams.get("redirect");
   const handleSocialLogin = (provider) => {
-    const res = signIn(provider);
+    const res = signIn(provider, {
+      redirect: true,
+      callbackUrl: path ? path : "/",
+    });
   };
   if (session.status === "authenticated") {
     router.push("/");

@@ -6,7 +6,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
 import {signIn} from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import SocialSignin from "@/components/shared/SocialSignin";
 
 export default function LoginPage() {
@@ -14,11 +14,13 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams()
+  const path = searchParams.get('redirect')
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await signIn("credentials", {
-      email, password, redirect: false
+      email, password, redirect: true, callbackUrl: path? path : '/'
     })
     if(res.status === 200){
       router.push('/')

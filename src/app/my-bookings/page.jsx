@@ -5,9 +5,11 @@ import { motion } from "framer-motion";
 import { Calendar, Clock, FilePenLine, Trash2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
+import UpdateBooking from "@/components/Modal/UpdateBooking";
 
 const MyBookingsPage = () => {
   const [bookings, setBookings] = useState([]);
+  const [selectedBooking, setSelectedBooking] = useState(null);
 
   const session = useSession();
   const loadData = async () => {
@@ -23,14 +25,14 @@ const MyBookingsPage = () => {
     loadData();
   }, [session]);
 
-  const handleViewBooking = (id) => {
-    console.log(`View booking ${id}`);
-    // Implement view booking logic here
+  const handleUpdateBooking = (booking) => {
+    setSelectedBooking(booking);
+    document.getElementById("update_modal")?.showModal(); // Show modal
   };
 
   const handleCancelBooking = async (id) => {
     const deleted = await fetch(
-      `http://localhost:3000/my-bookings/api/delete-booking/${id}`,
+      `http://localhost:3000/my-bookings/api/booking/${id}`,
       {
         method: "DELETE",
       }
@@ -144,7 +146,7 @@ const MyBookingsPage = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <button
-                        onClick={() => handleViewBooking(booking._id)}
+                        onClick={() => handleUpdateBooking(booking)}
                         className="text-purple-400 hover:text-purple-300 mr-4 transition-colors duration-150 ease-in-out"
                       >
                         <FilePenLine className="h-5 w-5" />
@@ -172,6 +174,15 @@ const MyBookingsPage = () => {
           >
             You have no bookings yet.
           </motion.p>
+        )}
+
+        {/* Modal component */}
+        {selectedBooking && (
+          <UpdateBooking
+            booking={selectedBooking}
+            loadData={loadData}
+            closeModal={() => document.getElementById("update_modal").close()}
+          />
         )}
       </div>
     </div>
